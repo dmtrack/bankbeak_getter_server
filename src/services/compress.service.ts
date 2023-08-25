@@ -1,40 +1,19 @@
 import path from 'path';
 import AdmZip from 'adm-zip';
-const outputPath = path.join(__dirname, '../upload/');
+import * as url from 'url';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const outputPath = path.join(__dirname, '../download/export');
 
 class CompressService {
-    async unzipFiles(files: Express.Multer.File[]) {
-        const startCompress = Date.now();
-        let fileName = '';
-        if (Array.isArray(files)) {
-            await files.forEach((f) => {
-                const zip = new AdmZip(f.buffer);
-                const zipEntries = zip.getEntries();
-                zipEntries.forEach(function (zipEntry: any) {
-                    if (
-                        zipEntry.name.includes('.html') &&
-                        zipEntry.name[0] !== '.'
-                    ) {
-                        fileName = zipEntry.name;
-                        zip.extractEntryTo(
-                            /*entry name*/ `${zipEntry.name}`,
-                            /*target path*/ outputPath,
-                            /*maintainEntryPath*/ true,
-                            /*overwrite*/ true
-                        );
-                    }
-                });
-            });
+    async unzipFiles() {
+        try {
+            const zip = new AdmZip('./src/download/file.zip');
+            zip.extractAllTo(outputPath, true);
+        } catch (e) {
+            console.log('decompress error');
         }
-        const finishCompress = Date.now();
-        const timeCompress = finishCompress - startCompress;
-        const usedMemory = process.memoryUsage().heapUsed / 1024 / 1024;
-
-        return {
-            fileName: fileName.split('.')[0],
-            compressMemory: usedMemory,
-            timeCompress: timeCompress,
-        };
     }
 }
-module.exports = new CompressService();
+
+export default new CompressService();
