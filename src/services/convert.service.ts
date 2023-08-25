@@ -20,6 +20,7 @@ class ConvertService {
                 spaces: 4,
             });
             const sourceObject: IBankCards = JSON.parse(result);
+
             return responceArrayMaker(sourceObject);
         } catch (e) {
             console.log('convert error');
