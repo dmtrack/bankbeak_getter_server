@@ -5,18 +5,6 @@ import { pipeline } from 'node:stream';
 import { promisify } from 'node:util';
 import fetch, { Response } from 'node-fetch';
 
-interface IFetchService {
-    getRecords: () => Promise<Record[]>;
-}
-
-interface IAPIOptions {
-    method: string;
-    headers: {
-        'X-RapidAPI-Key': string;
-        'X-RapidAPI-Host': string;
-    };
-}
-
 class FetchService {
     async downloadBeakData() {
         try {
