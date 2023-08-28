@@ -19,9 +19,17 @@ class FileController {
             const bankCards = await convertService.xmlToJson();
             console.log(bankCards, new Date().toUTCString());
 
-            await fs.rmSync(zipSource, {
-                force: true,
-            });
+            await fs.rm(
+                zipSource,
+                {
+                    force: true,
+                },
+                (err) => {
+                    if (err) {
+                        console.log('delete error');
+                    }
+                }
+            );
 
             const targetFile = fs.readdirSync(targetFolder)[0];
             await fs.rmSync(`${targetFolder}/${targetFile}`, {

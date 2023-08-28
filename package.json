@@ -8,7 +8,9 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "tsc && nodemon ./dist/index.js",
         "dev": "nodemon --esm ./src/index.ts",
-        "build": "tsc"
+        "build": "tsc",
+        "watch": "tsc -w",
+        "debug": "tsc && node --inspect --experimental-modules ./dist/index.js"
     },
     "author": "dmtrack",
     "license": "ISC",
